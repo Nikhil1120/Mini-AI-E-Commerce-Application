@@ -36,7 +36,7 @@ These four are enough to start (you already have them):
 | Variable | Example |
 |----------|---------|
 | `DATABASE_URL` | Neon Postgres URL with `?sslmode=require` |
-| `FRONTEND_URL` | `https://your-app.vercel.app` |
+| `FRONTEND_URL` | `https://your-app.vercel.app` (no trailing slash; Vercel `*.vercel.app` URLs are also allowed via CORS regex) |
 | `GOOGLE_CLIENT_ID` | Google OAuth Web client ID |
 | `ADMIN_EMAIL` | your@gmail.com |
 

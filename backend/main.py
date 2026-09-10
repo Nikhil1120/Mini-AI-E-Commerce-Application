@@ -18,9 +18,9 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# CORS from env + common local origins (Vite may use 5173, 5174, etc.)
+# CORS: explicit origins + regex for localhost and all Vercel deployment URLs
 origins = {
-    settings.FRONTEND_URL,
+    settings.FRONTEND_URL.rstrip("/"),
     "http://localhost:3000",
     "http://localhost:5173",
     "http://localhost:5174",
@@ -28,15 +28,15 @@ origins = {
     "http://127.0.0.1:5174",
     "http://127.0.0.1:3000",
 }
-# Allow comma-separated extra origins via FRONTEND_URL if needed
-extra = settings.FRONTEND_URL.split(",") if "," in settings.FRONTEND_URL else []
-origins.update(o.strip() for o in extra if o.strip())
+for origin in settings.FRONTEND_URL.split(","):
+    cleaned = origin.strip().rstrip("/")
+    if cleaned:
+        origins.add(cleaned)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=list(origins),
-    # Allow any localhost port during local dev (e.g. when 5173 is already in use)
-    allow_origin_regex=r"http://(localhost|127\.0\.0\.1):\d+",
+    allow_origin_regex=r"https://.*\.vercel\.app|http://(localhost|127\.0\.0\.1):\d+",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
