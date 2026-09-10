@@ -51,11 +51,23 @@ These four are enough to start (you already have them):
 
 You do **not** need `GOOGLE_CLIENT_SECRET` for frontend Google Sign-In (ID token flow).
 
-## After first deploy
+## Seed the database (no Shell on free plan)
 
-Open Render **Shell** and run:
+Render **free tier does not include Shell**. Use one of these options:
+
+### Option A — Automatic (recommended)
+
+The backend runs `seed_database()` on startup. After deploy, products and demo users are created if the DB is empty.
+
+Redeploy once after pushing the latest `main.py` change.
+
+### Option B — Seed from your PC (Neon URL)
 
 ```bash
+cd backend
+# Windows PowerShell — paste your Neon DATABASE_URL
+$env:DATABASE_URL="postgresql://user:pass@host/db?sslmode=require"
+$env:ADMIN_EMAIL="your@gmail.com"
 python seed.py
 ```
 

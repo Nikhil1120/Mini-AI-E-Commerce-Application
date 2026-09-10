@@ -44,6 +44,19 @@ app.add_middleware(
 
 create_tables()
 
+
+@app.on_event("startup")
+def startup_seed_database() -> None:
+    """Seed products and demo users on deploy (Render free tier has no Shell)."""
+    try:
+        from seed import seed_database
+
+        seed_database()
+        logger.info("Database seed check completed")
+    except Exception as exc:
+        logger.warning("Database seed skipped or failed: %s", exc)
+
+
 from routers import auth, products, cart, orders, payments, admin, ai
 
 app.include_router(auth.router)

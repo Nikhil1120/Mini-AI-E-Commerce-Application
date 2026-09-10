@@ -112,7 +112,7 @@ def promote_admin(email: str) -> None:
         db.close()
 
 
-def seed_database() -> None:
+def seed_database(exit_on_error: bool = False) -> None:
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
 
@@ -195,7 +195,9 @@ def seed_database() -> None:
     except Exception as e:
         db.rollback()
         print(f"[ERROR] Error seeding database: {e}")
-        sys.exit(1)
+        if exit_on_error:
+            sys.exit(1)
+        raise
     finally:
         db.close()
 
@@ -204,4 +206,4 @@ if __name__ == "__main__":
     if len(sys.argv) >= 3 and sys.argv[1] == "--promote-admin":
         promote_admin(sys.argv[2])
     else:
-        seed_database()
+        seed_database(exit_on_error=True)
