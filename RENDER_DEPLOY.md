@@ -2,15 +2,24 @@
 
 ## Fix for Python 3.14 build errors
 
-Render defaults to Python 3.14, which breaks older pinned packages (`pydantic-core` Rust build).
+Render may use Python 3.14, which breaks old `pydantic==2.5.0` (Rust compile fails).
 
-This repo includes `backend/runtime.txt` pinning **Python 3.11.11**. Push to GitHub and redeploy.
+This repo fixes that in two ways:
 
-Alternatively in Render → **Environment** → add:
+1. **`requirements.txt` updated** — newer packages use pre-built wheels (no Rust build).
+2. **Python pinned to 3.11** via `runtime.txt` (repo root + `backend/`) and `backend/.python-version`.
 
-```
-PYTHON_VERSION=3.11.11
-```
+After pulling latest code, redeploy on Render.
+
+### Force Python 3.11 on Render (dashboard)
+
+1. Open your Web Service on Render
+2. Click **Environment** in the left sidebar
+3. Click **+ Add Environment Variable**
+4. Key: `PYTHON_VERSION` → Value: `3.11.11`
+5. Click **Save Changes** (triggers redeploy)
+
+If you only see "Deploy latest commit" without env vars, you are on the **Events/Deploy** tab — switch to **Environment** tab first.
 
 ## Render service settings
 
