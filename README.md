@@ -216,7 +216,24 @@ cd backend
 pytest -q
 ```
 
-## Deployment
+## Live Demo URLs
+
+| Service | URL |
+|---------|-----|
+| **Frontend** | https://mini-ai-e-commerce-application-bnmpf5vmx.vercel.app |
+| **Backend API** | https://mini-ai-e-commerce-application-x1eg.onrender.com |
+| **API Docs (Swagger)** | https://mini-ai-e-commerce-application-x1eg.onrender.com/docs |
+| **GitHub** | https://github.com/Nikhil1120/Mini-AI-E-Commerce-Application |
+
+## Deployment (Used — Free Tier)
+
+| Layer | Platform |
+|-------|----------|
+| Frontend | Vercel |
+| Backend | Render |
+| Database | Neon (PostgreSQL) |
+
+See [RENDER_DEPLOY.md](./RENDER_DEPLOY.md) and [SUBMISSION.md](./SUBMISSION.md) for full steps.
 
 ### Frontend → Vercel
 
@@ -224,18 +241,15 @@ pytest -q
 2. Set env: `VITE_API_URL`, `VITE_GOOGLE_CLIENT_ID`, `VITE_STRIPE_PUBLISHABLE_KEY`
 3. Add production origin to Google OAuth + backend `FRONTEND_URL` / CORS
 
-### Backend → AWS EC2
+### Backend → Render (or AWS EC2 for production)
 
-1. Launch Ubuntu EC2, open ports 22/80/443
-2. Install Python, clone repo, create venv, install requirements
-3. Configure `.env` with PostgreSQL URL + secrets
-4. Run with systemd + uvicorn/gunicorn, or Docker
-5. Put Nginx reverse proxy in front; terminate TLS
-6. Point Stripe webhook to `https://api.yourdomain.com/payments/webhook`
+**Render (used):** Web service, `backend/` root, `uvicorn main:app --host 0.0.0.0 --port $PORT`
 
-### Database → Managed PostgreSQL
+**AWS EC2 (production alternative):** EC2 + Nginx + RDS + Stripe webhook endpoint
 
-Use RDS (or Neon/Supabase) and set `DATABASE_URL`.
+### Database → Neon / RDS
+
+PostgreSQL via Neon (free) or AWS RDS in production.
 
 ## Scaling
 
@@ -246,9 +260,21 @@ See [SYSTEM_DESIGN.md](./SYSTEM_DESIGN.md) for horizontal scaling, Redis, worker
 - Cursor
 - ChatGPT / Grok (Cursor)
 
+## Submission Documents
+
+- [SUBMISSION.md](./SUBMISSION.md) — Full deliverables, deployment flow, known limitations
+- [ONE_PAGE_SYSTEM_DESIGN.md](./ONE_PAGE_SYSTEM_DESIGN.md) — One-page architecture diagram
+- [SYSTEM_DESIGN.md](./SYSTEM_DESIGN.md) — Detailed design + scaling
+- [DATABASE_SCHEMA.md](./DATABASE_SCHEMA.md) — Database schema
+- [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) — API reference
+
+## Known Limitation — Stripe on Live Demo
+
+Real Stripe checkout requires a verified business email for account activation. The live demo uses **mock payment mode** (`STRIPE_MOCK_MODE=auto`). Full payment logic is implemented and testable via mock checkout; real Stripe test mode works locally with configured keys.
+
 ## Total Time Taken
 
-Total development time: ~XX hours (placeholder — fill in your actual time)
+~27–35 hours total (both assignments + deployment). See [SUBMISSION.md](./SUBMISSION.md).
 
 ## License
 

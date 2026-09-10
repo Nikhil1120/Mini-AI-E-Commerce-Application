@@ -1,6 +1,8 @@
 # API Documentation
 
-Base URL: `http://localhost:8000`
+Base URL (local): `http://localhost:8000`
+
+Base URL (production): `https://mini-ai-e-commerce-application-x1eg.onrender.com`
 
 Interactive docs: `/docs` (Swagger) | `/redoc`
 

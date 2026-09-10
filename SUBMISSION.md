@@ -1,0 +1,142 @@
+# Assignment Submission — Moksha Technical Interview
+
+## Candidate
+**Nikhil** — Full Stack Developer Technical Assignment
+
+---
+
+## Deliverables Checklist
+
+| Deliverable | Location |
+|-------------|----------|
+| GitHub Repository (Assignment 1) | https://github.com/Nikhil1120/Figma-to-Responsive-React-Page |
+| GitHub Repository (Assignment 2) | https://github.com/Nikhil1120/Mini-AI-E-Commerce-Application |
+| Live URL — Assignment 1 (Landing Page) | https://nikhil1120.github.io/Figma-to-Responsive-React-Page/ |
+| Live URL — Assignment 2 Frontend | https://mini-ai-e-commerce-application-bnmpf5vmx.vercel.app |
+| Live URL — Assignment 2 Backend API | https://mini-ai-e-commerce-application-x1eg.onrender.com |
+| API Docs (Swagger) | https://mini-ai-e-commerce-application-x1eg.onrender.com/docs |
+| README | `README.md` (both repos) |
+| Database Schema | [DATABASE_SCHEMA.md](./DATABASE_SCHEMA.md) |
+| API Documentation | [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) |
+| One-Page System Design | [ONE_PAGE_SYSTEM_DESIGN.md](./ONE_PAGE_SYSTEM_DESIGN.md) |
+
+---
+
+## Assignment 1 — Figma to Responsive React Page (Hydra Curls)
+
+### Description
+Responsive landing page built from Figma design: hero video, product sections, community video grid, clinical stats, testimonials, hair types, footer.
+
+### Tech Stack
+- React 19, Vite, CSS, Tailwind
+- GitHub Pages deployment
+
+### Deployment Steps Used
+1. Built production bundle: `npm run build`
+2. Set Vite `base: '/Figma-to-Responsive-React-Page/'` for GitHub Pages
+3. Deployed with `gh-pages` package to `gh-pages` branch
+4. Enabled GitHub Pages: Settings → Pages → branch `gh-pages` → `/ (root)`
+
+---
+
+## Assignment 2 — Mini AI E-Commerce Application
+
+### Description
+Full-stack e-commerce with Google OAuth, RBAC admin panel, cart/orders, Stripe payment integration (mock mode on live demo), and AI support chatbot with database-backed tools.
+
+### Tech Stack
+| Layer | Tools |
+|-------|-------|
+| Frontend | React, Vite, Tailwind, React Router, Axios, Zustand, Lucide |
+| Backend | Python, FastAPI, SQLAlchemy, Pydantic, Uvicorn |
+| Database | PostgreSQL (Neon) — SQLite locally |
+| Auth | Google OAuth + JWT |
+| Payments | Stripe Checkout + Webhooks (mock mode for demo) |
+| AI | LangChain + Gemini/OpenAI + deterministic tool-router fallback |
+
+---
+
+## Project Flow (Assignment 2)
+
+```
+1. User opens Vercel frontend
+2. Login via Google OAuth OR Dev demo login (DEV_MODE)
+3. Backend verifies Google token → issues JWT
+4. Browse products (GET /products) → PostgreSQL
+5. Add to cart (POST /cart/items)
+6. Checkout → create order (PENDING) → Stripe/mock checkout
+7. Payment confirmed via webhook or mock-complete → stock reduced, cart cleared
+8. Admin: CRUD products, view orders (RBAC enforced on backend)
+9. AI chat: user question → tools query DB → response (no hallucinated prices)
+```
+
+---
+
+## Deployment Process (Assignment 2)
+
+### Step 1 — GitHub
+- Pushed `assignment2` code to: `Mini-AI-E-Commerce-Application`
+
+### Step 2 — Database (Neon — free)
+- Created PostgreSQL project on [neon.tech](https://neon.tech)
+- Copied connection string → `DATABASE_URL` on Render
+
+### Step 3 — Backend (Render — free)
+- New Web Service, root directory: `backend`
+- Build: `pip install -r requirements.txt`
+- Start: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+- Python 3.11 via `runtime.txt` + updated `requirements.txt`
+- Environment variables: `DATABASE_URL`, `FRONTEND_URL`, `GOOGLE_CLIENT_ID`, `ADMIN_EMAIL`, `JWT_SECRET_KEY`, `DEV_MODE=true`, `STRIPE_MOCK_MODE=auto`
+- Auto-seed on startup (no Shell on free tier)
+
+### Step 4 — Frontend (Vercel — free)
+- Imported repo, root directory: `frontend`
+- Env: `VITE_API_URL`, `VITE_GOOGLE_CLIENT_ID`
+- Deploy → live Vercel URL
+
+### Step 5 — CORS + OAuth
+- Updated `FRONTEND_URL` on Render to match Vercel URL
+- Added `*.vercel.app` CORS regex in backend
+- Added Vercel URL to Google Cloud OAuth authorized origins
+
+---
+
+## Known Limitation — Stripe Payments (Live Demo)
+
+**Stripe real checkout could not be fully completed on the live deployment** because Stripe account activation requires a **verified business/working email**, which was not available during this assignment.
+
+**What works instead:**
+- Full checkout **UI flow** is implemented
+- **Mock payment mode** (`STRIPE_MOCK_MODE=auto`) simulates success/fail/cancel
+- Backend payment logic, order status updates, and stock reduction are implemented and testable via mock checkout
+- Real Stripe test mode works locally with Stripe CLI webhooks when keys are configured
+
+---
+
+## Total Time Taken
+
+| Assignment | Estimated Time |
+|------------|----------------|
+| Assignment 1 — UI from Figma | ~8–10 hours |
+| Assignment 2 — Full-stack app | ~15–20 hours |
+| Deployment & debugging | ~4–5 hours |
+| **Total** | **~27–35 hours** |
+
+*(Adjust to your actual hours before submitting.)*
+
+---
+
+## AI Tools Used
+
+| Tool | Purpose |
+|------|---------|
+| **Cursor IDE** | Primary development environment, code generation, debugging |
+| **Cursor AI Agent** | Component implementation, deployment fixes, CORS/build troubleshooting |
+| **ChatGPT / Claude** | Architecture planning, documentation review |
+| **Figma** | Design reference (Assignment 1) |
+
+---
+
+## How to Run Locally
+
+See [README.md](./README.md) and [RENDER_DEPLOY.md](./RENDER_DEPLOY.md).

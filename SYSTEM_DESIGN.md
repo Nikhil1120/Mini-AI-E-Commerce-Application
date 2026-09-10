@@ -81,13 +81,21 @@ The AI agent uses LangChain tools that query the real database:
 
 User identity comes from JWT — the AI never trusts user-provided IDs.
 
-## Deployment
+## Deployment (Implemented)
 
 ```
-User → Vercel (Frontend) → AWS EC2 (FastAPI) → PostgreSQL
+User → Vercel (React Frontend)
+         ↓ HTTPS / REST + JWT
+       Render (FastAPI Backend)
+         ↓                    ↓
+    Neon (PostgreSQL)    Stripe Webhook / Mock Checkout
                               ↑
-                         Stripe Webhook
+                    Google OAuth (ID token verify)
 ```
+
+**Assignment 1:** GitHub Pages (`Figma-to-Responsive-React-Page` repo)
+
+**AWS production equivalent:** CloudFront + S3 (frontend), ALB + EC2/ECS (API), RDS (database), Secrets Manager, Route 53.
 
 ## Scaling Strategy
 
